@@ -27,20 +27,21 @@ yarn add xlsx-write-stream-transform
 **ES Modules / ES6 / Typescript**
 
 ```Javascript
-import XLSXTransformer from 'xlsx-write-stream-transform'
+import {XLSXTransform} from 'xlsx-write-stream-transform'
 ```
 _Package provides TypeScript types_
 
 **UMD**
 
 ```Javascript
-var XLSXTransformer = require('xlsx-write-stream-transform')
+const {XLSXTransform} = require('xlsx-write-stream-transform')
 ```
 
 ## Example
 
+**index.mjs**
 ```Javascript
-import XLSXTransformer from 'xlsx-write-stream-transform'
+import {XLSXTransform} from 'xlsx-write-stream-transform'
 import { Readable } from 'stream';
 import * as fs from 'fs'
 
