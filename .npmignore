@@ -1,0 +1,9 @@
+src/
+tests/
+dist/*.map
+tmp/
+examples/
+*.xlsx
+jest.config.js
+test.setup.ts
+yarn.lock

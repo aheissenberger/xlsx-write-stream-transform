@@ -1,0 +1,41 @@
+{
+  "name": "xlsx-write-stream-transform",
+  "version": "0.0.1",
+  "main": "./dist/index.js", 
+	"module": "./dist/index.module.js", 
+	"exports": "./dist/index.modern.js",
+  "source": "src/index.ts",
+  "types": "dist/index.d.ts",
+  "license": "bsd-2-clause",
+  "description": "XLSX Excel Write Stream Transformer.",
+  "keywords": [
+    "excel",
+    "xlsx",
+    "stream"
+  ],
+  "author": "Andreas Heissenberger <andreas@heissenberger.at>",
+  "homepage": "https://github.com/aheissenberger/xlsx-write-stream-transform",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aheissenberger/xlsx-write-stream-transform.git"
+  },
+  "scripts": {
+    "build": "microbundle -i src/index.ts --format cjs,es,modern",
+    "prepublishOnly": "microbundle build -i src/index.ts --format cjs,es,modern",
+    "test": "npm run jest"
+  },
+  "dependencies": {
+    "archiver": "^5.3.0",
+    "lodash": "^4.17.21",
+    "remove": "^0.1.5"
+  },
+  "devDependencies": {
+    "@types/archiver": "^5.1.0",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.0.1",
+    "jest": "^26.6.3",
+    "jest-xml-matcher": "^1.2.0",
+    "microbundle": "^0.13.0",
+    "ts-jest": "^26.5.5"
+  }
+}

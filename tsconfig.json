@@ -1,0 +1,8 @@
+{
+  "module": "ESNext",
+  "target": "ESNext",
+  "typeAcquisition": { "include": ["jest-xml-matcher"] },
+  "compilerOptions": {
+    "esModuleInterop": true
+  }
+}
