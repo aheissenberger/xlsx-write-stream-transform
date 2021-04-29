@@ -3,8 +3,11 @@ import { Readable, PassThrough } from 'stream';
 import * as fs from 'fs'
 
 describe('XLSXTransformStream', () => {
-    xit('create simple xls', (done) => {
-        const inputStream = Readable.from([['test', 123]]);
+    it('create simple xls', (done) => {
+        const inputStream = Readable.from([
+            ['Text','Number','Number','True','False','Date'],
+            ['test', 123, 99.123,true,false,new Date()]
+        ]);
         const transform = new XLSXTransformStream();
         const outputStream=fs.createWriteStream('test.xlsx');
         outputStream.on('finish', function () {
@@ -12,7 +15,7 @@ describe('XLSXTransformStream', () => {
         })
         inputStream.pipe(transform).pipe(outputStream)
     })
-    it('create simple xls', (done) => {
+    xit('create simple xls', (done) => {
         const inputStream = new Readable({ objectMode: true })
         const transform = new XLSXTransformStream();
         const outputStream=fs.createWriteStream('test.xlsx');

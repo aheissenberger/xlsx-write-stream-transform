@@ -3,7 +3,7 @@ import { getCellId } from '../src/utils';
 
 describe('The Cell function', () => {
     it('Returns correct Cell representation for Date', () => {
-        const expectedResult = '<c r="A1" t="n"><v>36525.958333333336</v></c>';
+        const expectedResult = '<c r="A1" t="n" s="1"><v>36525.958333333336</v></c>';
         const result = Cell(new Date('2000-01-01T00:00:00'), getCellId(0, 0));
         expect(result).toEqualXML(expectedResult);
     });
@@ -15,9 +15,13 @@ describe('The Cell function', () => {
     });
 
     it('Returns correct Cell representation for boolean', () => {
-        const expectedResult = '<c r="B2" t="inlineStr"><is><t>true</t></is></c>';
-        const result = Cell(true, getCellId(1, 1));
-        expect(result).toEqualXML(expectedResult);
+        const expectedResult = '<c r="B2" t="b"><v>1</v></c>';
+        const resultTrue = Cell(true, getCellId(1, 1));
+        expect(resultTrue).toEqualXML(expectedResult);
+
+        const expectedResultFalse = '<c r="B2" t="b"><v>0</v></c>';
+        const resultFalse = Cell(false, getCellId(1, 1));
+        expect(resultFalse).toEqualXML(expectedResultFalse);
     });
 
     it('Returns correct Cell representation for number', () => {
