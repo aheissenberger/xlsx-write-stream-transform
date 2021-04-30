@@ -1,6 +1,6 @@
 {
   "name": "xlsx-write-stream-transform",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./dist/index.js",
   "source": "src/index.ts",
   "types": "dist/index.d.ts",
@@ -20,6 +20,7 @@
   "scripts": {
     "build": "microbundle -i src/index.ts --format cjs,es,modern",
     "prepublishOnly": "microbundle build -i src/index.ts --format cjs,es,modern",
+    "watch": "microbundle build --watch --no-compress -i src/index.ts --format cjs",
     "test": "npm run jest"
   },
   "dependencies": {

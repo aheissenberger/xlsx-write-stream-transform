@@ -13,29 +13,20 @@ export default class XLSXTransformStream extends Transform {
      */
     constructor() {
         super({ objectMode: true });
-        
-        this.initializeArchiver();
 
         this.sheetStream = new PassThrough();
+        this.initializeArchiver();
         this.sheetStream.write(templates.SheetHeader);
-
-        this.zip.append(this.sheetStream, {
-            name: 'xl/worksheets/sheet1.xml',
-        });
-        this.fini=this.zip.finalize()
     }
 
     initializeArchiver() {
         this.zip = archiver('zip', {
             //zlib: { level: 9 }
-            //forceUTC: true,
         });
 
         this.zip.on('data', (data) => {
             this.push(data);
         });
-
-        //this.zip.catchEarlyExitAttached = true;
 
         this.zip.append(templates.ContentTypes, {
             name: '[Content_Types].xml',
@@ -64,13 +55,23 @@ export default class XLSXTransformStream extends Transform {
         this.zip.on('error', (err) => {
             console.error(err);
         });
+
+        this.zip.append(this.sheetStream, {
+            name: 'xl/worksheets/sheet1.xml',
+        });
+        
+        this.fini=this.zip.finalize()
     }
 
-    _transform(row, encoding, callback) {
+     _transform(row, encoding, callback) {
         const xlsxRow=templates.Row(this.rowCount, row);
-        this.sheetStream.write(xlsxRow)
-        this.rowCount++
-        callback();
+        const writeStatus =this.sheetStream.write(xlsxRow)
+        if (!writeStatus) {
+            this.sheetStream.once('drain',callback)
+        } else {
+            this.rowCount++
+            process.nextTick(callback);
+        }
     }
 
     async _flush(callback) {
