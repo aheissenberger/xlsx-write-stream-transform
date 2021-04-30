@@ -1,3 +1,5 @@
+import {Duplex} from 'stream'
+
 const baseString = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 export function getCellId(rowIndex, cellIndex) {
     let cellXPosition = '';
@@ -30,10 +32,4 @@ export function sanitize(text) {
         }
     }
     return buffer.toString('utf8', 0, writtenLength);
-}
-
-export function timeoutPromised(timeout) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, timeout);
-    });
 }

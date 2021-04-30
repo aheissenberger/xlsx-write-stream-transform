@@ -63,15 +63,22 @@ export default class XLSXTransformStream extends Transform {
         this.fini=this.zip.finalize()
     }
 
-     _transform(row, encoding, callback) {
-        const xlsxRow=templates.Row(this.rowCount, row);
-        const writeStatus =this.sheetStream.write(xlsxRow)
+    sheetStreamWrite(xlsxRow,encoding,next) {
+        const writeStatus =this.sheetStream.write(xlsxRow,encoding)
+        const localRow=this.rowCount;
         if (!writeStatus) {
-            this.sheetStream.once('drain',callback)
+            this.sheetStream.once('drain',()=>{
+                this.sheetStreamWrite(xlsxRow,encoding,next)
+            })
         } else {
             this.rowCount++
-            process.nextTick(callback);
+            process.nextTick(next);
         }
+    }
+
+     _transform(row, encoding, next) {
+        const xlsxRow=templates.Row(this.rowCount, row);
+        this.sheetStreamWrite(xlsxRow,encoding,next)
     }
 
     async _flush(callback) {
