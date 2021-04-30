@@ -1,8 +1,6 @@
 # XLSX Excel Write Stream Transformer
 
-High perfomance Excel XLSX creation as a replacement for existing CSV exports.  There are no options to format, style or style the output.
-
-Based on the ZIP archive format, streaming will not start before all records have been processed! Expect a much higher memory consumption compared to CSV exports.
+High perfomance streaming Excel XLSX creation as a replacement for existing CSV exports.  There are no options to format or style the output.
 
 This library is no replacement for [exceljs](https://www.npmjs.com/package/exceljs).
 
@@ -39,32 +37,31 @@ const {XLSXTransform} = require('xlsx-write-stream-transform')
 
 ## Example
 
-**index.mjs**
+**index.mjs (Node.js >= 14.8)**
 ```Javascript
-import {XLSXTransform} from 'xlsx-write-stream-transform'
+import { XLSXTransform } from 'xlsx-write-stream-transform'
 import { Readable } from 'stream';
+import { pipeline } from 'stream/promises'
 import * as fs from 'fs'
 
-async function main() {
-    return new Promise((resolve) => {
-        const inputStream = new Readable({ objectMode: true })
-        const transform = new XLSXTransform();
-        const outputStream = fs.createWriteStream('test.xlsx');
+const inputStream = new Readable({ objectMode: true })
+const transform = new XLSXTransform();
+const outputStream = fs.createWriteStream('test.xlsx');
 
-        outputStream.on('finish', function () {
-            resolve()
-        })
-        
-        inputStream.pipe(transform).pipe(outputStream)
+const p = pipeline(
+    inputStream,
+    transform,
+    outputStream
+)
 
-        for (let index = 1; index <= 1000; index++) {
-            inputStream.push([index, 'Text', 99.99, true, new Date()])
-        }
-        inputStream.push(null)
-    })
+const nowDate=new Date();
+inputStream.push(['Index', 'Text', 'Number', 'Boolean', 'Date'])
+for (let index = 1; index <= 1000; index++) {
+    inputStream.push([index, 'Text', 99.99, true, nowDate])
 }
+inputStream.push(null)
 
-await main()
+await p
 ```
 
 ### Contribution
